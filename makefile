@@ -8,13 +8,13 @@ all: parser
 parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
 	gcc -o mdl $(CFLAGS) lex.yy.c y.tab.c $(OBJECTS) $(LDFLAGS)
 
-lex.yy.c: mdl.l y.tab.h 
+lex.yy.c: mdl.l y.tab.h
 	flex -I mdl.l
 
 y.tab.c: mdl.y symtab.h parser.h
 	bison -d -y mdl.y
 
-y.tab.h: mdl.y 
+y.tab.h: mdl.y
 	bison -d -y mdl.y
 
 symtab.o: symtab.c parser.h matrix.h
@@ -36,14 +36,18 @@ draw.o: draw.c draw.h display.h ml6.h matrix.h gmath.h
 	$(CC) $(CFLAGS) -c draw.c
 
 gmath.o: gmath.c gmath.h matrix.h
-	$(CC) $(CFLAGS) -c gmath.c 
+	$(CC) $(CFLAGS) -c gmath.c
 
 stack.o: stack.c stack.h matrix.h
-	$(CC) $(CFLAGS) -c stack.c 
+	$(CC) $(CFLAGS) -c stack.c
 
 clean:
-	rm *.o *~
+	rm *.o
 	rm y.tab.c y.tab.h
 	rm lex.yy.c
 	rm -rf mdl.dSYM
+	rm mdl
+	rm *.png *~
 
+run: all
+	./mdl script.mdl
